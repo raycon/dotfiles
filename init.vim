@@ -83,6 +83,7 @@ autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTr
     \ quit | endif
 
 let g:NERDTreeWinSize=35
+let g:NERDTreeShowHidden=1
 
 " EasyMotion -------------------------------------------------------------------
 
