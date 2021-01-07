@@ -1,0 +1,16 @@
+// For coc-flow
+// mkdir .vim && echo '{ "javascript.validate.enable": false }' > .vim/coc-settings.json
+{
+  "http.proxyStrictSSL": false,
+  "eslint.autoFixOnSave": true,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "json",
+    "jsonc",
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "tsserver.formatOnType": true,
+  "coc.preferences.formatOnType": true
+}

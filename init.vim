@@ -48,6 +48,7 @@ Plug 'tpope/vim-commentary'
 Plug 'easymotion/vim-easymotion'
 Plug 'raimondi/delimitmate'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install'  }
+Plug 'Yggdroot/indentLine'
 
 " IDE
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -65,18 +66,7 @@ call plug#end()
 " PLUGIN SETTINGS
 "-------------------------------------------------------------------------------
 
-" vim-plug ---------------------------------------------------------------------
-
-nmap <leader>pi :PlugInstall<CR>
-nmap <leader>pc :PlugClean<CR>
-nmap <leader>pu :PlugUpdate<CR>
-
 " Color ------------------------------------------------------------------------
-
-" TMUX Configuration: ~/.tmux.conf
-" set -g default-terminal "screen-256color"
-" set -ga terminal-overrides ",*256col*:Tc"
-nmap <leader>t :NERDTreeFocus<CR>
 
 if (has("termguicolors"))
     set termguicolors
@@ -89,9 +79,6 @@ autocmd vimenter * hi Normal guibg=NONE ctermbg=NONE
 
 " NERDTree ---------------------------------------------------------------------
 
-nmap <silent> <F2> :NERDTreeToggle<CR>
-nmap <silent> <S-F2> :NERDTreeFind<CR>
-
 " Exit Vim if NERDTree is the only window left.
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
     \ quit | endif
@@ -101,12 +88,7 @@ let g:NERDTreeWinSize=35
 " EasyMotion -------------------------------------------------------------------
 
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
-" let g:EasyMotion_add_search_history = 0 " Disable add search history
-
-nmap f <Plug>(easymotion-overwin-f2)
-
-" Turn on case-insensitive feature
-let g:EasyMotion_smartcase = 1
+let g:EasyMotion_smartcase = 1  " Turn on case-insensitive feature
 
 " Airline ----------------------------------------------------------------------
 
@@ -117,38 +99,14 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 
 " fzf --------------------------------------------------------------------------
 
-nmap <c-e> :History<cr>
-nmap <a-e> :Buffers<cr>
-
-" Respects .gitignore
-nnoremap <expr> <C-n> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
-
-" Grep
+" Define Rg
 command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
-nnoremap <silent> <leader>g :Rg<CR>
 
 " COC --------------------------------------------------------------------------
 
-source ~/.vim/coc.vim
+source ~/dotfiles/coc.vim
 
-" for coc-flow
-" mkdir .vim && echo '{ "javascript.validate.enable": false }' > .vim/coc-settings.json
 let g:coc_global_extensions=['coc-json', 'coc-css', 'coc-tsserver', 'coc-flow', 'coc-prettier', 'coc-eslint' ]
-
-" Comment ----------------------------------------------------------------------
-
-nmap <c-_> <S-v>gcgv<esc>
-vmap <c-_> gcgv<esc>
-
-" Syntax -----------------------------------------------------------------------
-
-" :verbose set conceallevel? concealcursor?
-let g:vim_json_conceal=0
-let g:jsx_ext_required = 0
-
-" Markdown Preview -------------------------------------------------------------
-
-nmap <C-p> <Plug>MarkdownPreviewToggle
 
 "-------------------------------------------------------------------------------
 " GLOBAL SETTINGS
@@ -206,12 +164,6 @@ set mouse=n
 map j gj
 map k gk
 
-" Toggle
-nmap <silent> <leader>th :setlocal hlsearch! hlsearch?<CR>
-nmap <silent> <leader>tw :setlocal wrap!<CR>:setlocal wrap?<CR>
-nmap <silent> <leader>tn :setlocal number!<CR>
-nmap <silent> <leader>tp :setlocal invpaste paste?<CR>
-
 " Yank all
 nmap ya :%y+<CR>
 
@@ -228,3 +180,37 @@ nmap <silent> <A-p> :bp<CR>
 nmap <silent> <A-n> :bn<CR>
 nmap <silent> <C-A-n> :tabnext<CR>
 nmap <silent> <C-A-p> :tabprev<CR>
+
+" Plugin ----------------------------------------------------------------------
+
+" vim-plug
+nmap <leader>pi :PlugInstall<CR>
+nmap <leader>pc :PlugClean<CR>
+nmap <leader>pu :PlugUpdate<CR>
+
+" NERDTree
+nmap <silent> <F2> :NERDTreeToggle<CR>
+nmap <silent> <S-F2> :NERDTreeFind<CR>
+
+" EasyMotion
+nmap f <Plug>(easymotion-overwin-f2)
+
+" fzf
+nmap <c-e> :History<cr>
+nmap <a-e> :Buffers<cr>
+nnoremap <expr> <C-n> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
+nnoremap <C-g> :Rg<CR>
+
+" Comment
+nmap <c-_> <S-v>gcgv<esc>
+vmap <c-_> gcgv<esc>
+
+" Toggle ----------------------------------------------------------------------
+
+nmap <silent> <leader>th :setlocal hlsearch! hlsearch?<CR>
+nmap <silent> <leader>tw :setlocal wrap!<CR>:setlocal wrap?<CR>
+nmap <silent> <leader>tn :setlocal number!<CR>
+nmap <silent> <leader>tp :setlocal invpaste paste?<CR>
+nmap <silent> <leader>tb <Plug>MarkdownPreviewToggle
+nmap <silent> <leader>ti :IndentLinesToggle<CR>
+
