@@ -84,6 +84,7 @@ autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTr
 
 let g:NERDTreeWinSize=35
 let g:NERDTreeShowHidden=1
+let g:NERDTreeIgnore=['\.git$']
 
 " EasyMotion -------------------------------------------------------------------
 
