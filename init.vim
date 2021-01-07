@@ -12,7 +12,6 @@
 
 nmap <silent> ,ev :e  $MYVIMRC<CR>
 autocmd! bufwritepost $MYVIMRC source $MYVIMRC
-autocmd! bufleave echo $MYVIMRC
 
 " leader
 let mapleader = ","
@@ -34,7 +33,10 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-obsession'
 
 " File
-Plug 'preservim/nerdtree'
+Plug 'ryanoasis/vim-devicons'
+Plug 'preservim/nerdtree' |
+  \ Plug 'Xuyuanp/nerdtree-git-plugin' |
+  \ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
@@ -54,9 +56,6 @@ Plug 'Yggdroot/indentLine'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Syntax
-Plug 'kevinoid/vim-jsonc'
-Plug 'pangloss/vim-javascript'
-Plug 'maxmellon/vim-jsx-pretty'
 Plug 'sheerun/vim-polyglot'
 Plug 'styled-components/vim-styled-components'
 
@@ -196,9 +195,9 @@ nmap <silent> <S-F2> :NERDTreeFind<CR>
 nmap f <Plug>(easymotion-overwin-f2)
 
 " fzf
-nmap <c-e> :History<cr>
-nmap <a-e> :Buffers<cr>
 nnoremap <expr> <C-n> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
+nnoremap <C-e> :History<cr>
+nnoremap <A-e> :Buffers<cr>
 nnoremap <C-g> :Rg<CR>
 
 " Comment
@@ -213,4 +212,7 @@ nmap <silent> <leader>tn :setlocal number!<CR>
 nmap <silent> <leader>tp :setlocal invpaste paste?<CR>
 nmap <silent> <leader>tb <Plug>MarkdownPreviewToggle
 nmap <silent> <leader>ti :IndentLinesToggle<CR>
+
+" Use CTRL-S for saving, also in Insert mode
+noremap <C-S> :update<CR>
 
