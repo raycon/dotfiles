@@ -10,11 +10,12 @@
 " Remap for easy edit 
 "-------------------------------------------------------------------------------
 
-nmap <silent> ,ev :e  $MYVIMRC<CR>
-autocmd! bufwritepost $MYVIMRC source $MYVIMRC
-
 " leader
 let mapleader = ","
+
+nmap <silent> <leader>ev :e  $MYVIMRC<CR>
+nmap <silent> <leader>ec :e  ~/dotfiles/coc.vim<CR>
+nmap <silent> <leader>so :source $MYVIMRC<CR>
 
 "-------------------------------------------------------------------------------
 " vim-plug
@@ -54,6 +55,7 @@ Plug 'Yggdroot/indentLine'
 
 " IDE
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'liuchengxu/vista.vim'
 
 " Syntax
 Plug 'sheerun/vim-polyglot'
@@ -71,10 +73,25 @@ if (has("termguicolors"))
     set termguicolors
 endif
 
+syntax on
 colorscheme onedark
 
+hi link jsModuleKeyword Identifier
+hi link jsxComponentName Identifier
+hi link jsxBraces Operator
+hi link jsClassDefinition Identifier
+hi link jsFlowObjectKey Identifier
+hi Comment gui=italic
+
+let g:onedark_terminal_italics=1
+
+" Italic
+
+" set t_ZH=[3m
+" set t_ZR=[23m
+
 " transparent bg
-autocmd vimenter * hi Normal guibg=NONE ctermbg=NONE
+" autocmd vimenter * hi Normal guibg=NONE ctermbg=NONE
 
 " NERDTree ---------------------------------------------------------------------
 
@@ -96,18 +113,31 @@ let g:EasyMotion_smartcase = 1  " Turn on case-insensitive feature
 let g:airline_theme='onedark'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#fnamemod = ':t:r'
+let g:airline#extensions#tabline#formatter = 'jsformatter'
 
 " fzf --------------------------------------------------------------------------
 
 " Define Rg
 command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
 
+let $FZF_DEFAULT_COMMAND = 'rg --files --hidden'
+
 " COC --------------------------------------------------------------------------
 
 source ~/dotfiles/coc.vim
 
 let g:coc_global_extensions=['coc-json', 'coc-css', 'coc-tsserver', 'coc-flow', 'coc-prettier', 'coc-eslint' ]
+
+" Polyglot ---------------------------------------------------------------------
+
+let g:javascript_plugin_flow = 1
+
+" Vista ------------------------------------------------------------------------
+
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista_default_executive = 'coc'
+let g:vista_fzf_preview = ['right:50%']
 
 "-------------------------------------------------------------------------------
 " GLOBAL SETTINGS
@@ -157,6 +187,9 @@ set clipboard=unnamedplus
 " Mouse
 set mouse=n
 
+" Fix typing mistakes
+command! Vs vs
+
 "-------------------------------------------------------------------------------
 " KEY MAPPING
 "-------------------------------------------------------------------------------
@@ -182,6 +215,28 @@ nmap <silent> <A-n> :bn<CR>
 nmap <silent> <C-A-n> :tabnext<CR>
 nmap <silent> <C-A-p> :tabprev<CR>
 
+" Update
+nmap <silent> <leader>w :update<CR>
+
+" Syntax ----------------------------------------------------------------------
+function! Pad(s,amt)
+    return a:s . repeat(' ',a:amt - len(a:s))
+endfunction
+
+function! SynStack ()
+    for item in synstack(line("."), col("."))
+        let gid = synIDtrans(item)
+        let sname = synIDattr(item, "name")
+        let gname = synIDattr(gid, "name")
+        let fg = synIDattr(gid, "fg#")
+        let bg = synIDattr(gid, "fg#")
+        echo Pad(sname, 15)." -> ".Pad(gname, 15)." BG: ".Pad(bg,7)." FG: ".fg
+    endfor
+endfunction
+
+map <silent> <leader>g :call SynStack()<CR>
+map <silent> <leader>ht :so $VIMRUNTIME/syntax/hitest.vim<CR>
+
 " Plugin ----------------------------------------------------------------------
 
 " vim-plug
@@ -189,12 +244,12 @@ nmap <leader>pi :PlugInstall<CR>
 nmap <leader>pc :PlugClean<CR>
 nmap <leader>pu :PlugUpdate<CR>
 
-" NERDTree
-nmap <silent> <F2> :NERDTreeToggle<CR>
-nmap <silent> <S-F2> :NERDTreeFind<CR>
-
 " EasyMotion
-nmap f <Plug>(easymotion-overwin-f2)
+nmap <space> <Plug>(easymotion-overwin-f)
+map  <leader>/ <Plug>(easymotion-sn)
+omap <leader>/ <Plug>(easymotion-tn)
+map <leader>j <Plug>(easymotion-j)
+map <leader>k <Plug>(easymotion-k)
 
 " fzf
 nnoremap <expr> <C-n> (len(system('git rev-parse')) ? ':Files' : ':GFiles --exclude-standard --others --cached')."\<cr>"
@@ -206,6 +261,9 @@ nnoremap <C-g> :Rg<CR>
 nmap <c-_> <S-v>gcgv<esc>
 vmap <c-_> gcgv<esc>
 
+" Vista
+nmap <c-t> :Vista finder<cr>
+
 " Toggle ----------------------------------------------------------------------
 
 nmap <silent> <leader>th :setlocal hlsearch! hlsearch?<CR>
@@ -214,7 +272,9 @@ nmap <silent> <leader>tn :setlocal number!<CR>
 nmap <silent> <leader>tp :setlocal invpaste paste?<CR>
 nmap <silent> <leader>tb <Plug>MarkdownPreviewToggle
 nmap <silent> <leader>ti :IndentLinesToggle<CR>
-
-" Use CTRL-S for saving, also in Insert mode
-noremap <C-S> :update<CR>
+nmap <silent> <leader>tt :NERDTreeToggle<CR>
+nmap <silent> <leader>tf :NERDTreeFind<CR>
+nmap <silent> <leader>tc :set cursorline!<CR>
+nmap <silent> <leader>ta :AirlineToggle<CR>
+nmap <silent> <leader>to :Vista!!<Cr>
 

@@ -9,7 +9,7 @@ fi
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/raegon/.oh-my-zsh"
+export ZSH="${HOME}/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -106,7 +106,6 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias drmcs='docker container rm $(docker container ls -aq)'
 alias n='nautilus .'
-alias rp='cd ~/repository'
 alias aws='aws --no-verify-ssl'
 alias vim='nvim'
 alias vi='nvim'
@@ -123,6 +122,9 @@ alias tc='vi ~/.tmux.conf'
 alias tcs='tmux source ~/.tmux.conf'
 
 alias c='clear'
+alias repo='cd ~/repo && ll'
+alias mtv='cd ~/repo/mtv && ll' 
+alias ams='cd ~/repo/ams && ll'
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -133,5 +135,5 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 export NODE_TLS_REJECT_UNAUTHORIZED=0
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/home/raegon/.sdkman"
-[[ -s "/home/raegon/.sdkman/bin/sdkman-init.sh" ]] && source "/home/raegon/.sdkman/bin/sdkman-init.sh"
+export SDKMAN_DIR="${HOME}/.sdkman"
+[[ -s "${HOME}/.sdkman/bin/sdkman-init.sh" ]] && source "${HOME}/.sdkman/bin/sdkman-init.sh"
