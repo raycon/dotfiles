@@ -106,7 +106,6 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias drmcs='docker container rm $(docker container ls -aq)'
 alias n='nautilus .'
-alias aws='aws --no-verify-ssl'
 alias vim='nvim'
 alias vi='nvim'
 alias vc='vi ~/.config/nvim/init.vim'
@@ -132,8 +131,12 @@ alias ams='cd ~/repo/ams && ll'
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
-export NODE_TLS_REJECT_UNAUTHORIZED=0
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="${HOME}/.sdkman"
 [[ -s "${HOME}/.sdkman/bin/sdkman-init.sh" ]] && source "${HOME}/.sdkman/bin/sdkman-init.sh"
+
+# Load .bash_profile
+if [ -f ~/.bash_profile ]; then
+  . ~/.bash_profile
+fi

@@ -113,7 +113,7 @@ let g:EasyMotion_smartcase = 1  " Turn on case-insensitive feature
 let g:airline_theme='onedark'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#fnamemod = ':t:r'
+let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#formatter = 'jsformatter'
 
 " fzf --------------------------------------------------------------------------
@@ -219,6 +219,7 @@ nmap <silent> <C-A-p> :tabprev<CR>
 nmap <silent> <leader>w :update<CR>
 
 " Syntax ----------------------------------------------------------------------
+
 function! Pad(s,amt)
     return a:s . repeat(' ',a:amt - len(a:s))
 endfunction
