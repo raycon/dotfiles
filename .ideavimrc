@@ -1,46 +1,34 @@
-" How to reload changes
-" :source ~/.ideavimrc
+" Edit and reload changes ------------------------------------------------------
 
-" -----------------------------------------------------------------------------
-" Plugins 
-" -----------------------------------------------------------------------------
+nnoremap \r :source ~/.ideavimrc<CR>
 
-" easymotion
-" <Space>
+" Map leader to space ----------------------------------------------------------
+
+let mapleader=" "
+
+" Plugins ----------------------------------------------------------------------
+
 set easymotion
+set NERDTree
+set surround                " ys, cs, ds, S
+set multiple-cursors        " <A-n>, <A-x>, <A-p>, g<A-n>
+set commentary              " gcc, gc + motion, v_gc
+set ReplaceWithRegister     " gr, grr
+set argtextobj              " aa, ia
+set exchange                " cx, cxx, X, cxc
+set textobj-entire          " ae, ie
+set highlightedyank         " highlight yanked region
+set vim-paragraph-motion    " {, }
+set textobj-indent          " ai, ii, aI
+set matchit                 " %
 
-" surround
-" ys, cs, ds, S
-set surround
+" Plugin settings --------------------------------------------------------------
 
-" multiple-cursors
-" <A-n> : next
-" <A-x> : skip
-" <A-p> : prev
-" g<A-n>: match without boundaries
-set multiple-cursors
+let g:argtextobj_pairs="[:],(:),<:>"
 
-" commentary
-" gcc, gc + motion, v_gc
-set commentary
+" Common settings --------------------------------------------------------------
 
-" argtextobj
-" daa, caa, dia, cia
-set argtextobj
-
-" Disabled
-" set ReplacewithRegister
-" set exchange
-" set textobj-entire
-
-" -----------------------------------------------------------------------------
-" Set commands
-" -----------------------------------------------------------------------------
-
-" IDEA
-set ideamarks           " sync mark with IDE's bookmark
-set ideajoin            " join command will be performed via IDE
-set idearefactormode=keep   " keep the mode that was enabled before starting a refactoring
+set showmode
 
 " Search
 set wrapscan            " searches wrap around the end of file
@@ -50,35 +38,95 @@ set incsearch           " show where search pattern typed so far matches
 set ignorecase          " ignore case in search patterns
 
 " Cursor
-set scrolloff=10        " minimum number of lines above and below the cursor
+set scrolloff=5        " minimum number of lines above and below the cursor
 
-" Clipboard (IdeaVim > System)
-set clipboard+=unnamed  " Use the clipboard as the default register
+" Bell
 set visualbell
 set noerrorbells
 
-" -----------------------------------------------------------------------------
-" Mappings
-" -----------------------------------------------------------------------------
+" Idea specific settings -------------------------------------------------------
 
-" Leader
-let mapleader=","
+set ideajoin            " join command will be performed via IDE
+set ideastatusicon=gray
+set idearefactormode=keep
 
-" Windows navigation
-nmap <C-h> <C-w>h
-nmap <C-j> <C-w>j
-nmap <C-k> <C-w>k
-nmap <C-l> <C-w>l
+" Mappings ---------------------------------------------------------------------
+" C - Ctrl      A - Alt     M - Meta    S - Shift   D - Command (mac)
 
-" Easymotion
-let g:EasyMotion_startofline=0 " Keep cursor positin
-nmap f <Plug>(easymotion-bd-f)
-nmap <Space>h <Plug>(easymotion-bl)
-nmap <Space>j <Plug>(easymotion-j)
-nmap <Space>k <Plug>(easymotion-k)
-nmap <Space>l <Plug>(easymotion-wl)
+" ZenMode
+nmap <C-z>      <Action>(ToggleDistractionFreeMode)
 
-" Actions
-nmap ,ld :action defaultLombokData<CR>
-nmap <Leader>rn <Action>(RenameElement)
-nmap <Leader>rp <Action>(Replace)
+" Window
+nmap <C-h>      <C-w>h
+nmap <C-l>      <C-w>l
+nmap <C-j>      <C-w>j
+nmap <C-k>      <C-w>k
+nmap <C-m>      <Action>(MoveEditorToOppositeTabGroup)
+nmap <Tab>      <Action>(NextTab)
+
+" Navigation
+nmap <C-A-l>    <Action>(Forward)
+nmap <C-A-h>    <Action>(Back)
+
+" File
+nmap <C-e>      <Action>(RecentFiles)
+nmap <C-n>      <Action>(GotoClass)
+nmap <C-S-n>    <Action>(GotoFile)
+
+" Editor
+map <C-/>       gcc
+map <C-0>       <Action>(EditorResetFontSize)
+map <C-->       <Action>(EditorDecreaseFontSize)
+map <C-=>       <Action>(EditorIncreaseFontSize)
+map <C-p>       <Action>(ParameterInfo)
+map <C-S-k>     <Action>(MoveLineUp)
+map <C-S-j>     <Action>(MoveLineDown)
+" nmap <Leader>l  <Action>(OptimizeImports)<Action>(ReformatCode)
+
+" Refactoring ------------------------------------------------------------------
+nmap <C-t>      <Action>(Refactorings.QuickListPopupAction)
+nmap <C-g>      <Action>(Generate)
+
+nmap <Leader>r  <Action>(RenameElement)
+nmap <Leader>s  <Action>(ChangeSignature)
+nmap <Leader>o  <Action>(OverrideMethods)
+nmap <Leader>i  <Action>(ImplementMethods)
+nmap <Leader>v  <Action>(IntroduceVariable)
+nmap <Leader>c  <Action>(IntroduceConstant)
+nmap <Leader>f  <Action>(IntroduceField)
+nmap <Leader>p  <Action>(IntroduceParameter)
+nmap <Leader>m  <Action>(ExtractMethod)
+nmap <Leader>n  <Action>(Inline)
+
+" Run
+nmap <Leader>,r <Action>(ContextRun)
+nmap <Leader>,e <Action>(Rerun)
+nmap <Leader>,f <Action>(RerunFailedTests)
+
+" Mac Mappings -----------------------------------------------------------------
+
+" Multiple-cursors
+nnoremap <M-N>       <A-N>
+nnoremap <M-P>       <A-P>
+nnoremap <M-X>       <A-X>
+nnoremap g<M-N>      g<A-N>
+
+" Editor
+" imap <C-S-CR>    <Action>(EditorCompleteStatement)
+
+" Useful default mappings ------------------------------------------------------
+
+" map <leader>f <Plug>(easymotion-s)
+" map <leader>e <Plug>(easymotion-f)
+"
+" map <leader>d <Action>(Debug)
+" map <leader>r <Action>(RenameElement)
+" map <leader>c <Action>(Stop)
+" map <leader>z <Action>(ToggleDistractionFreeMode)
+"
+" map <leader>s <Action>(SelectInProjectView)
+" map <leader>a <Action>(Annotate)
+" map <leader>h <Action>(Vcs.ShowTabbedFileHistory)
+"
+" map <leader>b <Action>(ToggleLineBreakpoint)
+" map <leader>o <Action>(FileStructurePopup)
